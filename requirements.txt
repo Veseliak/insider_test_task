@@ -1,0 +1,4 @@
+selenium==4.19.0
+pytest
+webdriver-manager
+requests

@@ -1,0 +1,14 @@
+# Virtual environment
+.venv/
+
+# PyCharm project settings
+.idea/
+
+# pytest cache
+.pytest_cache/
+
+# Python cache
+__pycache__/
+
+# Зображення PNG
+*.png
