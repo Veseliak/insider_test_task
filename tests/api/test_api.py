@@ -28,7 +28,7 @@ def pet_id():
 def created_pet(pet_id):
     payload = pet_payload(pet_id)
     response = requests.post(f"{BASE_URL}/pet", json=payload, headers=HEADERS)
-    print("Create PET:", response.status_code, response.text)  # Додай це
+    print("Create PET:", response.status_code, response.text)
     assert response.status_code == 200
     return pet_id
 
@@ -38,7 +38,7 @@ def wait_for_pet_to_exist(pet_id, retries=5, delay=1):
         if response.status_code == 200:
             return response
         time.sleep(delay)
-    return response  # останній результат
+    return response
 
 # CREATE tests
 def test_create_pet_positive(pet_id):
@@ -50,7 +50,7 @@ def test_create_pet_positive(pet_id):
     assert data["name"] == "Doggo"
 
 def test_create_pet_negative_missing_fields():
-    payload = {"id": generate_pet_id()}  # немає name і status
+    payload = {"id": generate_pet_id()}
     response = requests.post(f"{BASE_URL}/pet", json=payload, headers=HEADERS)
     assert response.status_code in (400, 500) or "name" not in response.json()
 
@@ -73,9 +73,8 @@ def test_update_pet_negative():
     pet_id = generate_pet_id()
     payload = {"id": pet_id, "unknownField": "???"}
     response = requests.put(f"{BASE_URL}/pet", json=payload, headers=HEADERS)
-    # Навіть якщо 200, перевір, що name/status не змінилися
     get_response = requests.get(f"{BASE_URL}/pet/{pet_id}")
-    assert get_response.status_code == 404  # бо такого pet не існує
+    assert get_response.status_code == 404
 
 # DELETE tests
 def test_delete_pet_positive(created_pet):

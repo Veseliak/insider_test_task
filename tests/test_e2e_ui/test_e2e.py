@@ -18,5 +18,15 @@ def test_e2e(browser):
     careers.navigate_to_see_all_qa_jobs()
     qa = QAPage(browser)
     qa.apply_filters("Istanbul, Turkiye", "Quality Assurance")
-    qa.verify_jobs("Quality Assurance", "Istanbul, Turkiye")
-    qa.click_view_role_and_check_that_shown_correct_page()
+    jobs = qa.get_listed_jobs("Quality Assurance")
+    assert jobs, "No jobs found"
+    for job in jobs:
+        details = qa.get_job_details(job)
+        assert "Quality Assurance" in details["title"]
+        assert "Quality Assurance" in details["department"]
+        assert "Istanbul, Turkiye" in details["location"]
+    role_title = qa.get_selected_job_title()
+    qa.click_view_role()
+    qa.switch_to_new_tab()
+    assert "jobs.lever.co" in browser.current_url
+    assert role_title in browser.title
